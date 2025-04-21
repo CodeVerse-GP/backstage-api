@@ -1,0 +1,13 @@
+# Ignore dev/config files
+.eslintrc.json
+.prettierrc
+.gitignore
+.env
+*.log
+
+# Ignore docs and GitHub workflow files
+docs/
+.github/
+
+# Ignore node_modules (npm handles this)
+node_modules/

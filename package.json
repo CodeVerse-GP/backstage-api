@@ -1,0 +1,41 @@
+{
+  "name": "backstage-api",
+  "version": "1.0.0",
+  "description": "A CLI tool to interact with Backstage API",
+  "main": "index.js",
+  "bin": {
+    "backstage-api": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeVerse-GP/backstage-api.git"
+  },
+  "homepage": "https://github.com/CodeVerse-GP/backstage-api.git#readme",
+  "bugs": {
+    "url": "https://github.com/CodeVerse-GP/backstage-api.git/issues"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "format": "prettier --write \"**/*.{js,json,md}\""
+  },
+  "keywords": [
+    "backstage",
+    "api",
+    "cli",
+    "backstage-api"
+  ],
+  "author": "Codeverse-GP",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.8.1",
+    "cli-table3": "^0.6.5",
+    "commander": "^13.1.0",
+    "dotenv": "^16.4.7",
+    "node-fetch": "^3.3.2"
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.5",
+    "prettier": "^3.5.3"
+  }
+}
