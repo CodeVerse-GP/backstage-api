@@ -19,6 +19,7 @@ orphan
     try {
       const allItems = [];
       let cursor = undefined;
+      const limit = options.limit || Number.MAX_SAFE_INTEGER;
 
       do {
         const res = await apiClient.get('/catalog/entities/by-query', {
@@ -31,20 +32,18 @@ orphan
           },
         });
 
-        const { items, pageInfo } = res.data;
-
-        for (const item of items) {
-          allItems.push(item);
-          if (options.limit && allItems.length >= options.limit) break;
+        const { items = [], pageInfo } = res.data;
+        
+        const remainingCapacity = limit - allItems.length;
+        const itemsToAdd = items.slice(0, remainingCapacity);
+        allItems.push(...itemsToAdd);
+        
+        if (allItems.length >= limit) {
+          break;
         }
-
-        if (options.limit && allItems.length >= options.limit) break;
+        
         cursor = pageInfo?.nextCursor;
       } while (cursor);
-
-      const output = options.limit
-        ? allItems.slice(0, options.limit)
-        : allItems;
 
       if (options.pretty) {
         const table = new Table({
@@ -52,25 +51,22 @@ orphan
           colWidths: [20, 30, 40],
         });
 
-        output.forEach((entity) => {
+        allItems.forEach((entity) => {
           table.push([
             entity.kind || '',
             entity.metadata?.name || '',
-            entity.orphan.spec.owner
-              ? orphan.spec.owner.replace(
-                  /^(user:default\/|group:default\/)/,
-                  ''
-                )
-              : '',
+            entity.spec?.owner || '',
           ]);
         });
 
         console.log(table.toString());
+        console.log(`\nTotal orphan entities: ${allItems.length}`);
       } else {
-        console.log(JSON.stringify(res.data, null, 2));
+        console.log(JSON.stringify(allItems, null, 2));
       }
     } catch (err) {
       console.error('Error fetching orphan entities:', err.message);
+      process.exit(1);
     }
   });
 
