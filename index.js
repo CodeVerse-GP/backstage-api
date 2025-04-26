@@ -4,6 +4,7 @@ const { version, name, author } = require('./package.json');
 const { Command } = require('commander');
 const facet = require('./commands/facet');
 const orphan = require('./commands/orphan');
+const catalog = require('./commands/catalog');
 
 const program = new Command();
 
@@ -14,5 +15,6 @@ program
 
 program.addCommand(facet);
 program.addCommand(orphan);
+program.addCommand(catalog);
 
 program.parse(process.argv);
